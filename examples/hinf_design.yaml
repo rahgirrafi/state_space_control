@@ -1,0 +1,9 @@
+# Mixed-sensitivity H-infinity design spec.
+# Run with:  ros2 run state_space_control ss_design plant.npz hinf_design.yaml
+# Needs python-control + slycot (pip install control slycot).
+controller: hinf_mixsyn
+params:
+  # Each weight: scalar or {num: [...], den: [...]} transfer-function coeffs.
+  W1: {num: [0.5, 10.0], den: [1.0, 0.0001]}   # sensitivity: large at low freq
+  W2: {num: [1.0, 1.0], den: [0.01, 100.0]}    # control effort / HF rolloff
+  # W3: 1.0                                    # complementary sensitivity

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>state_space_control</name>
+  <version>0.1.0</version>
+  <description>
+    Modular controller-synthesis toolbox for linear state-space plants
+    (LQR, LQG, H-infinity, ...), designed around the models produced by
+    urdf_state_space. New controllers plug in via a registry.
+  </description>
+  <maintainer email="rahgirrafi@gmail.com">rahgirrafi</maintainer>
+  <license>BSD-3-Clause</license>
+
+  <exec_depend>python3-numpy</exec_depend>
+  <exec_depend>python3-scipy</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <!-- Optional at runtime: python-control (+ slycot) for H-infinity -->
+
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

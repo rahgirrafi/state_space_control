@@ -1,0 +1,7 @@
+# LQR design spec for a plant exported by urdf_state_space.
+# Run with:  ros2 run state_space_control ss_design plant.npz lqr_design.yaml
+controller: lqr
+params:
+  # scalar (=> scalar * identity), a diagonal list, or a full matrix
+  Q: [100.0, 100.0, 1.0, 1.0]   # one entry per state: [positions..., velocities...]
+  R: 0.1
