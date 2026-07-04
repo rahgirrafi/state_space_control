@@ -1,9 +1,9 @@
-"""Design a controller for a saved plant from a YAML spec.
+"""Design a controller for a saved plant from a YAML spec::
 
     ss_design plant.npz design.yaml [-o controller.npz]
 
 where plant.npz comes from urdf_state_space (StateSpaceModel.save_npz or the
-urdf2ss export) and design.yaml looks like:
+urdf2ss export) and design.yaml looks like::
 
     controller: lqr
     params:

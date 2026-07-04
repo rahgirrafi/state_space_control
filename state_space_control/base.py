@@ -3,7 +3,7 @@
 A controller design is a class decorated with ``@register('name')`` that
 implements ``design(plant) -> ControllerResult``. Adding a new controller
 type to the toolbox means adding one module under ``controllers/`` — nothing
-else has to change:
+else has to change::
 
     from state_space_control.base import ControllerDesign, register
 

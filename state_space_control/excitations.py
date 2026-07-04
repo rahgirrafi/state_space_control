@@ -6,7 +6,7 @@ an *input disturbance at the plant input*, u = u_ctrl + d(t) — the same
 convention the benchmark's step metrics use. Pure initial-condition
 experiments use the ``zero`` excitation with an x0.
 
-Registering a new excitation mirrors the controller registry exactly:
+Registering a new excitation mirrors the controller registry exactly::
 
     from state_space_control.excitations import Excitation, register_excitation
 

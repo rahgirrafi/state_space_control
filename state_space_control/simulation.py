@@ -187,7 +187,7 @@ def annotate_events(
 
     - ``limit_violation``: q leaves the URDF limits (linear sims ignore
       them; flagged, never clamped).
-    - ``linear_validity``: |q − q_eq| exceeds the threshold — beyond it the
+    - ``linear_validity``: ``|q − q_eq|`` exceeds the threshold — beyond it the
       linearized response is fiction (needs meta['operating_point']).
     - ``instability`` / ``settling_time`` / ``overshoot_peak``: read off the
       actuated joints when the producer recorded stability info.
