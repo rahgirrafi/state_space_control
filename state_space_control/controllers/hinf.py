@@ -67,19 +67,39 @@ class HInf(ControllerDesign):
 
     The augmented plant (inputs [w; u], outputs [z; y]) is supplied as
     matrices; the design is independent of how you built it.
+
+    ``gamma`` requests a SUBOPTIMAL central controller for that fixed
+    attenuation level instead of the gamma-optimal one. The optimal central
+    controller often carries near-singular ultra-fast modes (1e9 rad/s and
+    beyond) that no sampled implementation can realize; backing gamma off
+    (e.g. 3-10x the optimal value) trades a little attenuation for a
+    controller with implementable bandwidth.
     """
 
-    def __init__(self, A, B, C, D, n_meas: int, n_ctrl: int):
+    def __init__(self, A, B, C, D, n_meas: int, n_ctrl: int, gamma=None):
         self.aug = Plant(A=np.asarray(A, float), B=np.asarray(B, float),
                          C=np.asarray(C, float), D=np.asarray(D, float))
         self.n_meas = int(n_meas)
         self.n_ctrl = int(n_ctrl)
+        self.gamma = None if gamma is None else float(gamma)
 
     def design(self, plant: Plant) -> ControllerResult:
         import control
-        P_aug = control.ss(self.aug.A, self.aug.B, self.aug.C, self.aug.D)
-        K, _, gamma, rcond = control.hinfsyn(P_aug, self.n_meas, self.n_ctrl)
+        if self.gamma is None:
+            P_aug = control.ss(self.aug.A, self.aug.B, self.aug.C, self.aug.D)
+            K, _, gamma, rcond = control.hinfsyn(
+                P_aug, self.n_meas, self.n_ctrl)
+            info = {'gamma': float(gamma), 'rcond': np.asarray(rcond)}
+        else:
+            import slycot
+            n = self.aug.A.shape[0]
+            out = slycot.synthesis.sb10ad(
+                n, self.aug.B.shape[1], self.aug.C.shape[0],
+                self.n_ctrl, self.n_meas, self.gamma,
+                self.aug.A, self.aug.B, self.aug.C, self.aug.D, job=4)
+            K = Plant(A=out[1], B=out[2], C=out[3], D=out[4])
+            info = {'gamma': self.gamma, 'gamma_suboptimal': True}
         return ControllerResult(
             name='hinf', plant=plant,
             controller=_flip_feedback_sign(K),
-            info={'gamma': float(gamma), 'rcond': np.asarray(rcond)})
+            info=info)
